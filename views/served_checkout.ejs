@@ -1,4 +1,39 @@
-<% include header %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= config.name %></title>
+
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/457ba3dc8e.js"></script>
+    
+    <!-- Bootstrap Core CSS -->
+    <link href="/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/material.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/main.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/components/toastr/toastr.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+
+<body>
+
 
 
 <style type="text/css">
@@ -7,20 +42,21 @@
     }
 </style>
 <div class="container-fluid" >
-<div class="row" style="margin-top:100px;">
-    <div class="col-xs-12">
-    <p><a href="/checkout/<%= cart.id %>" style="font-size:18px">Link to this checkout</a> </p>
+    <div class="row">
+        
+        <div class="col-xs-12">
+            <h2 class="text-center">Checkout cart #<%= cart.id%></h2>
+        </div>
     </div>
-</div>
     <% if ('undefined' !== typeof error_message){ %>
-    <div class="row" style="margin-top:100px;">
+    <div class="row">
         
         <div class="col-xs-12">
             <div class="alert alert-danger"><%= error_message; %></div>
         </div>
     </div>
     <% } %>
-    <div class="row">
+    <div class="row" style="margin-top: 50px;">
         <div class="col-lg-4 col-md-6">
             
             <div class="panel panel-primary">
@@ -110,15 +146,16 @@
                                         <% } %>
                                     </a></td>
                                     <td>
-                                        <a href="detail.html"><%= item.name; %></a>
-                                        <div>
-                                        <%  if (item.has_variants === true) { %>
 
-                                        <% for (var v_name in item.variantsDefinition){ %>
-                                            <span class="label label-primary" style="margin-right:5px">
-                                            <%= item.variant[v_name] %>
-                                        </span>
-                                        <% } %>
+                                    <a href="detail.html"><%= item.name; %></a>
+                                    <div>
+                            <%  if (item.has_variants === true) { %>
+
+                                    <% for (var v_name in item.variantsDefinition){ %>
+                                        <span class="label label-primary" style="margin-right:5px">
+                                        <%= item.variant[v_name] %>
+                                    </span>
+                                    <% } %>
                             <% } %>
                             
                         </div>
@@ -141,7 +178,7 @@
                             </tbody>
                         </table>
                         <div class="panel-body">
-                    </div>
+                        </div>
                 </div>
             </div>
             
@@ -173,7 +210,7 @@
                     <div style="margin-bottom:20px;">
                         <select class="form-control" id="selected_payment_method">
                             <option value="">Select a payment option</option>
-                            <option value="BraintreeMethod">Braintree</option>
+                            <option value="BraintreeMethod">Credit card or paypal</option>
                             <% for (var i =0; i< paymentMethods.length; i++) {
                                 var method = paymentMethods[i];
                             %>
@@ -349,7 +386,7 @@
         }
             console.log("Order",order);
         
-            var form = $("<form method='POST' action='/checkout'></form>");
+            var form = $("<form method='POST' action='/checkout/"+cart_id+"'></form>");
             var order_field = $("<input type='hidden' name='order'/>");
             order_field.val(JSON.stringify(order));
             form.append(order_field);
